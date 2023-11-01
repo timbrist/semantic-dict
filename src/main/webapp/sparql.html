@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SPARQL ENQUIRY</title>
+</head>
+<body>
+
+<form action="Enquiry" method="POST">
+    <div id = "query">
+        <p> SPARQL Query</p>
+        <textarea id = "query_text" rows="10" cols="100" name="query"></textarea>
+    </div>
+    <input type="submit" value="Submit">
+</form>
+    <div id = "result">
+    </div>
+
+</body>
+<script>
+    function fetchMessage() {
+        // Create an XMLHttpRequest object
+        var xhr = new XMLHttpRequest();
+
+        // Configure the request
+        xhr.open('POST', 'Enquiry', true);
+
+        // Define a callback function to handle the response
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = xhr.responseText; // Update the <div> with the response
+            }
+        };
+        // Send the request
+        xhr.send();
+    }
+</script>
+</html>
