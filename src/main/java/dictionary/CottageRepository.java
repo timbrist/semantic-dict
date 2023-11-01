@@ -1,5 +1,4 @@
 package dictionary;
-
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.QueryLanguage;
 import org.eclipse.rdf4j.query.TupleQuery;
@@ -11,7 +10,8 @@ import org.eclipse.rdf4j.repository.http.HTTPRepository;
 public class CottageRepository{
     private Repository repo;
     private String rdf4jServer = "http://localhost:8080/rdf4j-server/";
-    private String repositoryID = "CottageDB";
+    private String PREFIX = "PREFIX ctg: <http://localhost:8080/rdf4j-servlet-0.1/CottageBooking/onto#> \n";
+    private String repositoryID = "task6";
     private RepositoryConnection connection;
     private String defaultQuery = "SELECT ?s ?p ?o\n" + //
                     "WHERE{\n" + //
@@ -52,7 +52,7 @@ public class CottageRepository{
         return this.Search(this.defaultQuery);
     }
     public String ListAllCottage(){
-        String query = "PREFIX ctg: <http://users.jyu.fi/~yansh/CottageBooking/onto#>\n" + //
+        String query = PREFIX + //
                 "SELECT ?cottage\n" + //
                 "WHERE {\n" + //
                 "  ?cottage a ctg:Cottage .\n" + //
@@ -62,7 +62,7 @@ public class CottageRepository{
     }
 
     public String ListBookedCottage(){
-        String query = "PREFIX ctg: <http://users.jyu.fi/~yansh/CottageBooking/onto#>\n" + //
+        String query = PREFIX + //
                 "SELECT ?cottage\n" + //
                 "WHERE {\n" + //
                 "  ?cottage a ctg:Cottage ;\n" + //
@@ -74,7 +74,7 @@ public class CottageRepository{
 
     public String ShowCottageInfo(long cottageId){
         
-        String query1 = "PREFIX ctg: <http://users.jyu.fi/~yansh/CottageBooking/onto#>\n" + //
+        String query1 = PREFIX + //
                 "SELECT ?cottage ?name ?address ?distanceToCity ?distanceToLake ?hasBeds ?hasPlaces\n" + //
                 "WHERE {\n" + //
                 "  ?cottage a ctg:Cottage ;\n" + //
@@ -86,7 +86,7 @@ public class CottageRepository{
                 "           ctg:hasBeds ?hasBeds ;\n" + //
                 "           ctg:hasPlaces ?hasPlaces.\n" + //
                 "}";
-        String query2 = "PREFIX ctg: <http://users.jyu.fi/~yansh/CottageBooking/onto#>\n" +//
+        String query2 = PREFIX +//
                 "SELECT ?isbooked \n" + //
                 "WHERE {\n" + //
                 "  ?cottage a ctg:Cottage;\n" + //
@@ -99,7 +99,7 @@ public class CottageRepository{
         String reservedInfo = "" ;
         if(result2.contains(condiction)){
             //System.out.println(result2);
-            String query3 = "PREFIX ctg: <http://users.jyu.fi/~yansh/CottageBooking/onto#>\n" + //
+            String query3 = PREFIX + //
                     "SELECT ?start ?end\n" + //
                     "WHERE {\n" + //
                     "  ?cottage a ctg:BookedCottage ;\n" + //
