@@ -1,4 +1,4 @@
-package dictionary;
+
 import java.io.IOException; 
 import java.io.PrintWriter; 
 
@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 // Servlet implementation class FormDataHandle 
 
 // Annotation to map the Servlet URL 
-@WebServlet("/ListBooked") 
-public class ListBooked extends HttpServlet { 
+@WebServlet("/ShowBooked") 
+public class ShowBooked extends HttpServlet { 
 
 	// HttpServlet doPost(HttpServletRequest request, HttpServletResponse response) method 
     @Override
@@ -25,9 +25,10 @@ public class ListBooked extends HttpServlet {
             throws ServletException, IOException {
         this.doPost(request, response);
 
-        	
+        String idstring = request.getParameter("cottageId"); 
         CottageRepository cottageRepository = new CottageRepository();
-        String resultAsText = cottageRepository.ListBookedCottage();
+        long id = Long.parseLong(idstring);
+        String resultAsText = cottageRepository.ShowCottageInfo(id);
         
 		// set the content type of response to 'text/html' 
 		response.setContentType("text/html"); 
