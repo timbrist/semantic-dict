@@ -25,11 +25,9 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests().antMatchers("/api/**", "/h2-console/**").permitAll()
-                .antMatchers("/index.html", "/").permitAll() // Permit access to index.html
-                .antMatchers("/login.html", "/").permitAll()
-                .antMatchers("/signup.html", "/").permitAll()
-                .antMatchers("/login.js", "/").permitAll()
-                .antMatchers("/signup.js", "/").permitAll()
+                .antMatchers("/public/**", "/assets/**").permitAll() // Permit access to index.html
+                .antMatchers("/context/**").permitAll()
+                .antMatchers("/", "/index.html").permitAll()
                 .anyRequest().authenticated();
         http.headers().frameOptions().disable();
         return http.build();
