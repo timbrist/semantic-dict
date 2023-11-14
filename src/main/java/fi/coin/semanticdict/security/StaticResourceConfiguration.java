@@ -20,10 +20,7 @@ public class StaticResourceConfiguration implements WebMvcConfigurer {
         registry.addResourceHandler("/**")
                 .addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
     }
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("forward:/index.html");
-    }
+
     @Configuration
     @EnableWebMvc
     public class WebConfig extends WebMvcConfigurerAdapter {
