@@ -3,19 +3,39 @@
 <head>
     <title>Home Page</title>
     <link rel="stylesheet" href="assets/dictionary.css">
+    <link rel="stylesheet" href="assets/dict_image_upload.css">
 </head>
 <body>
 <div class="wrapper">
     <audio id="sound"></audio>
+
     <div class="container">
         <div class="search-box">
             <input type="text" placeholder="Type the word here..." id="inp-word" />
             <button id="search-btn">Search</button>
         </div>
         <div id="result" class="result"></div>
+        <div id="imageRes" class="result"></div>
     </div>
+
+    <!-- This Block we deal with Image -->
+    <label for="inputImage" id="inputLabel">Click Here to upload image</label>
+    <input type="file" id="inputImage" />
+    <div id="preview-image">
+        <div id="placeholder">
+
+            <div id="upload-area" title="select a image">
+
+            </div>
+        </div>
+    </div>
+
+
     <a href="" target="_blank">See The More Relations &nbsp;<i class="fab fa-youtube"></i></a>
+
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+<script src="context/dict_image_upload.js"></script>
 <script src="context/dictionary.js"></script>
 </body>
 </html>
