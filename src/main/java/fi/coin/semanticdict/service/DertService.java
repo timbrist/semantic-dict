@@ -6,9 +6,9 @@ import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import org.json.JSONObject;
-public class ImageTextService {
+public class DertService {
 
-    private static final String  API_URL = "https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-base";
+    private static final String  API_URL = "https://api-inference.huggingface.co/models/facebook/detr-resnet-50";
     private static final String API_TOKEN = "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";
 
     public JSONObject query(byte[] imageData) {
@@ -25,7 +25,7 @@ public class ImageTextService {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             String resBody = response.body();
             resBody = resBody.replace("[","")
-                            .replace("]","");
+                    .replace("]","");
             System.out.println(resBody);
             JSONObject result = new JSONObject(resBody);
             return result;

@@ -1,14 +1,14 @@
 package fi.coin.semanticdict.controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
-import fi.coin.semanticdict.dto.ImageDto;
+import fi.coin.semanticdict.dto.*;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,9 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import fi.coin.semanticdict.dto.SignUpDto;
-import fi.coin.semanticdict.dto.LoginDto;
-import fi.coin.semanticdict.dto.ResultDto;
 import fi.coin.semanticdict.entity.Role;
 import fi.coin.semanticdict.entity.User;
 import fi.coin.semanticdict.repository.RoleRepository;
@@ -33,6 +30,7 @@ import fi.coin.semanticdict.repository.UserRepository;
 
 import org.springframework.web.client.RestTemplate;
 import fi.coin.semanticdict.service.ImageTextService;
+import fi.coin.semanticdict.service.DertService;
 @RestController
 @RequestMapping("/api")
 public class AuthenticationController {
@@ -93,23 +91,60 @@ public class AuthenticationController {
     public ImageDto handleFileUpload(@RequestParam("image") MultipartFile file) {
         // Implement your logic to handle the file, like saving it to disk or a database
         System.out.println(file.getOriginalFilename());
+
+        // ====We will return imageDto as JSON===
         ImageDto imageDto = new ImageDto();
-        ImageTextService imageTextService = new ImageTextService();
-        String description = "";
+
+
         try {
+            // ==== Convert File into bytes[] =====
             byte[] imageData = file.getBytes();
+
+            // ====FIRST: Get Image descriptions ======
+            ImageTextService imageTextService = new ImageTextService();
+            String description = "";
             JSONObject imageText = imageTextService.query(imageData);
             description = imageText.getString("generated_text");
+
+            // =====Second: Get the object coordinates from dert service;
+            DertService dertService = new DertService();
+            JSONObject jsonObject  = dertService.query(imageData);
+            List<ObjectCoorDto> objectCoorList =new ArrayList<>();
+
+            Iterator<String> keys = jsonObject.keys();
+            while(keys.hasNext()) {
+                String key = keys.next();
+                if (jsonObject.get(key) instanceof JSONObject) {
+                    // do something with jsonObject here
+                    ObjectCoorDto objectCoorDto = new ObjectCoorDto();
+                    objectCoorDto.setScore(jsonObject.getDouble("score"));
+                    objectCoorDto.setLabel(jsonObject.getString("label"));
+                    JSONObject boxInfo = jsonObject.getJSONObject("box");
+                    Box box = new Box();
+                    box.xmin = boxInfo.getInt("xmin");
+                    box.ymin = boxInfo.getInt("ymin");
+                    box.xmax = boxInfo.getInt("xmax");
+                    box.ymax = boxInfo.getInt("ymax");
+                    objectCoorDto.setBox(box);
+                    objectCoorList.add(objectCoorDto);
+                }
+            }
+            imageDto.setImageName(file.getOriginalFilename());
+            imageDto.setImageDescription(description);
+            imageDto.setImageItems(objectCoorList);
+
+
         }catch (Exception e) {
-        e.printStackTrace();
-        return null; // Or handle the exception as appropriate
+            e.printStackTrace();
+            System.out.println("Check for the image file.");
         }
-        imageDto.setImageName(file.getOriginalFilename());
-        imageDto.setImageDescription(description);
 
         // Return a response, e.g., a confirmation message
         return imageDto;
     }
+
+//    @GetMapping("/search")
+//    public
 
 
 }

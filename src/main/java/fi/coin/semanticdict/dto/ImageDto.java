@@ -5,9 +5,12 @@ import java.util.List;
 public class ImageDto {
     String imageName;
     String imageDescription;
-    List<String> imageItems;
+    List<ObjectCoorDto> imageItems;
 
     public ImageDto() {
+        this.imageName = "NULL";
+        this.imageDescription = "NULL";
+        imageItems = null;
     }
 
     public void setImageName(String imageName) {
@@ -18,7 +21,7 @@ public class ImageDto {
         this.imageDescription = imageDescription;
     }
 
-    public void setImageItems(List<String> imageItems) {
+    public void setImageItems(List<ObjectCoorDto> imageItems) {
         this.imageItems = imageItems;
     }
 
@@ -30,7 +33,7 @@ public class ImageDto {
         return imageDescription;
     }
 
-    public List<String> getImageItems() {
+    public List<ObjectCoorDto> getImageItems() {
         return imageItems;
     }
 }
