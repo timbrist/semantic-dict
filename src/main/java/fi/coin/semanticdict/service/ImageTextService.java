@@ -9,7 +9,7 @@ import org.json.JSONObject;
 public class ImageTextService {
 
     private static final String  API_URL = "https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-base";
-    private static final String API_TOKEN = "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";
+    private static final String API_TOKEN = "";
 
     public JSONObject query(byte[] imageData) {
         try {

@@ -9,7 +9,7 @@ import org.json.JSONObject;
 public class DertService {
 
     private static final String  API_URL = "https://api-inference.huggingface.co/models/facebook/detr-resnet-50";
-    private static final String API_TOKEN = "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";
+    private static final String API_TOKEN = "";
 
     public JSONObject query(byte[] imageData) {
         try {
